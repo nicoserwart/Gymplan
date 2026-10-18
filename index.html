@@ -279,7 +279,7 @@
                 "Woche 5: Kraftaufbau (3er)", 
                 "Woche 6: Kraftintensivierung (2er)", 
                 "Woche 7: Spezifische Vorbereitung", 
-                "Woche 8: Leistungsüberprüfung (PR!)"
+                "Woche 8: Leistungsüberprüfung (PR-Versuch!)"
             ];
             document.getElementById('weekIndicatorDisplay').innerText = weeksText[currentWeek];
             renderWorkout();
@@ -291,7 +291,7 @@
             const container = document.getElementById('exerciseList');
             container.innerHTML = '';
 
-            // Periodisierungs-Logik für Hauptlifts (Top-Set + Back-offs gemäß Tabellenkonzept)
+            // Korrigierte Periodisierungs-Logik: Woche 8 zielt auf echten PR ab (102.5% - 105% des alten 1RM)
             let topSetPct = 0.75;
             let topSetReps = "5";
             let topSetRpe = "RPE 7";
@@ -304,8 +304,8 @@
             else if (currentWeek === 4) { topSetPct = 0.60; topSetReps = "3"; topSetRpe = "Deload"; backoffPct = 0.55; backoffReps = "3"; }
             else if (currentWeek === 5) { topSetPct = 0.83; topSetReps = "3"; topSetRpe = "RPE 7.5-8"; backoffPct = 0.78; backoffReps = "3"; }
             else if (currentWeek === 6) { topSetPct = 0.86; topSetReps = "2"; topSetRpe = "RPE 8"; backoffPct = 0.80; backoffReps = "3"; }
-            else if (currentWeek === 7) { topSetPct = 0.90; topSetReps = "1"; topSetRpe = "RPE 8-8.5"; backoffPct = 0.78; backoffReps = "2"; }
-            else if (currentWeek === 8) { topSetPct = 1.00; topSetReps = "1"; topSetRpe = "PR TEST"; backoffPct = 0.85; backoffReps = "1"; }
+            else if (currentWeek === 7) { topSetPct = 0.92; topSetReps = "1"; topSetRpe = "RPE 8.5"; backoffPct = 0.80; backoffReps = "2"; }
+            else if (currentWeek === 8) { topSetPct = 1.03; topSetReps = "1"; topSetRpe = "NEW PR TEST!"; backoffPct = 0.88; backoffReps = "1"; }
 
             wData.exercises.forEach((ex, idx) => {
                 let card = document.createElement('div');
@@ -323,21 +323,12 @@
                     for (let s = 1; s <= ex.sets; s++) {
                         let targetKg;
                         let repsVal = topSetReps;
-                        let labelDesc = "";
 
                         if (s === 1) {
                             targetKg = Math.round((baseVal * topSetPct) / 2.5) * 2.5;
-                            labelDesc = `Top-Satz (${topSetRpe})`;
                         } else {
                             targetKg = Math.round((baseVal * backoffPct) / 2.5) * 2.5;
                             repsVal = backoffReps;
-                            labelDesc = `Back-off ${s-1}`;
-                        }
-
-                        if (currentWeek === 8 && s > 1) {
-                            targetKg = Math.round((baseVal * 0.85) / 2.5) * 2.5;
-                            repsVal = "1";
-                            labelDesc = `Leichter Back-off`;
                         }
 
                         if (s === 1) {
